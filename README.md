@@ -12,29 +12,23 @@ Snow* is:
 ## How to build
 
 ```bash
-# Build the compiler
-g++ -Wall Common/*/*.cpp Common/*.cpp Compiler/*/*.cpp -o compiler -O3
-
-# Build the vm
-g++ -Wall Common/*/*.cpp Common/*.cpp Compiler/Lexer/*.cpp VM/*/*.cpp -o vm -O3
-
-# build the debugger
-g++ -Wall Common/*/*.cpp Common/*.cpp Compiler/Lexer/*.cpp Debugger/*/*.cpp -o debugger -O3
+mkdir build; cd build
+cmake .. && make
 ```
 
 ## How to run
 
 ```bash
-$ ./compiler
+$ ./build/src/Compiler/SnowStarCompiler
 Program usage: ./compiler {file.sssc}
 	{file.sssc}: the path to the file to compile
 
-$ ./vm
+$ ./build/src/VM/SnowStarVM
 Program usage: ./vm {file.ssbc} [options]
 	{file.ssbc}: the path to the file to compile
 	[options]:
 		--debug: starts the debugger
 		
-$ ./debugger 
+$ ./build/src/Debugger/SnowStarDebugger
 # Launch it only when the VM is started and waiting for the debugger to start
 ```
