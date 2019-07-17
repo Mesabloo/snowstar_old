@@ -3,11 +3,11 @@
 #include <bits/stdc++.h>
 
 #include "byte_lexer.hpp"
-#include "../../Common/Utils/utils.hpp"
+#include <Utils/utils.hpp>
 
-#include "../../Common/info.hpp"
+#include <info.hpp>
 
-#include "../../Common/termcolor.hpp"
+#include <termcolor.hpp>
 
 std::ifstream ByteLexer::is = std::ifstream();
 long long ByteLexer::m_read_size = 0;
@@ -24,7 +24,7 @@ std::vector<ByteToken*> ByteLexer::readLine() {
     int8_t value{0};
     std::vector<ByteToken*> vect;
     if (!is) {
-        std::cerr << "\033[38;5;194m" << "The file you tried to read cannot be open." << std::endl;
+        std::cerr << termcolor::red << "The file you tried to read cannot be open." << std::endl;
         return {};
     }
     do {
@@ -42,7 +42,7 @@ std::vector<ByteToken*> ByteLexer::readLine() {
 std::string string_buffer, integer_buffer;
 std::vector<ByteToken*> memory_type_buffer;
 bool isString{false}, isNumber{false}, isMemory{false};
-ByteToken* ByteLexer::checkValue(int8_t const val) {
+ByteToken* ByteLexer::checkValue(uint8_t const val) {
     // std::clog << termcolor::magenta << "Value=" << std::hex << static_cast<int64_t>(val) << "\tIsNumber=" << isNumber
     //    << "\tIsString=" << isString << "\tIsMemory=" << isMemory << termcolor::reset << std::endl;
     if (val == info::Dividers::EOL)
@@ -60,7 +60,7 @@ ByteToken* ByteLexer::checkValue(int8_t const val) {
         return nullptr;
     }
     if (val == info::Dividers::INSTR_PARAMS && !isString && !isNumber && !isMemory)
-        return new ByteToken(ByteToken::Type::SEPARATOR, val);
+        return new ByteToken(ByteToken::Type::SEPARATOR, static_cast<int8_t>(val));
     if (isString) {
         if (val == info::Dividers::STRING) {
             ByteToken* t = new ByteToken(ByteToken::Type::LITERAL_STRING, string_buffer);
@@ -96,10 +96,10 @@ ByteToken* ByteLexer::checkValue(int8_t const val) {
             isMemory = false;
             return t;
         } else
-            memory_type_buffer.push_back(new ByteToken(ByteToken::Type::KEYWORD, val));
+            memory_type_buffer.push_back(new ByteToken(ByteToken::Type::KEYWORD, static_cast<int8_t>(val)));
         return nullptr;
     }
-    return new ByteToken(ByteToken::Type::KEYWORD, val);
+    return new ByteToken(ByteToken::Type::KEYWORD, static_cast<int8_t>(val));
 }
 
 ByteConsumer* ByteLexer::createConsumerFromLine(std::vector<ByteToken*> line) const {
